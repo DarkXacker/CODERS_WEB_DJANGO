@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{ user.username }} {% endblock %}
+
+{% block home_color %} white {% endblock %}
+{% block add_color %} white {% endblock %}
+{% block signup_color %} white {% endblock %}
+{% block login_color %} white {% endblock %}
+
+{% block content %}
+
+<style>
+	.card {
+		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+		transition: 0.3s;
+		width: 40%;
+	}
+
+	.card:hover {
+		box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+	}
+
+	.container {
+		padding: 2px 16px;
+	}
+</style>
+<br>
+{% if user.is_authenticated %}
+
+	<center>
+		<div class="card">
+			{% if user_model.profile_pic %}
+				<img src="{{ user_model.profile_pic.url }}" alt="Avatar" style="width:100%">
+			{% else %}
+				<img src="{% static 'images/avatar.png' %}" alt="Avatar" style="width:100%">
+			{% endif %}
+			<div class="container">
+				<center>
+					<h4><b>User Name: {{ user_model.username }}</b></h4> <hr> 
+					<h4><b>First Name: {{ user_model.first_name }}</b></h4> 
+					<h4><b>First Name: {{ user_model.last_name }}</b></h4> 
+					{% if user_model.bio %}
+						<b><i><p>Bio: {{ user_model.bio }}</p> </i></b>
+					{% endif %}
+					<b><p>Email: {{ user_model.email }}</p></b>
+				</center>
+			</div>
+		</div>
+	</center>
+{% endif %}
+<br/><br/><br/><br/>
+
+{% endblock %}

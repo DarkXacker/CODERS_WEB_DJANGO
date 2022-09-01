@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load hitcount_tags %}
+
+{% block content %}
+
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+
+  <body>
+    <style>
+      .card {
+        overflow: auto;
+        width: auto;
+      }
+      .search {
+        display: none;
+      }
+    </style>
+    
+    <center>
+      <div class="card">
+        <h1 class="card-title">{{ article.title }}</h1>
+        <img src="{{ article.image.url }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h2 class="card-text">{{ article.body | safe }}</h2>
+          <a href="{% url 'article' %}" class="btn btn-primary"><i class="fa-solid fa-circle-chevron-left"></i> Back</a>
+
+          {% if user.is_superuser %}
+            <a href="{% url 'article_edit' article.pk %}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+            <a href="{% url 'article_delete' article.pk %}" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</a>
+          {% endif %}
+        </div>
+      </div>
+      <br>
+
+      <div class="container">
+        {% get_hit_count for article  %}
+        <i class="fa fa-eye" aria-hidden="true"></i>
+      </div>
+
+      <form action="{% url 'like_post' object.pk %}" method="POST">{% csrf_token %}
+        <button type="submit" class="like" name="post_id" value="{{ object.id }}" title="Like post"  class="flex items-center justify-center">
+          {% if user in article.likes.all %}
+            <span style="color: red;"><i class="fa-solid fa-heart"></i></span>
+          {% else %}
+            <span><i class="fa-brands fa-gratipay"></i></span>
+          {% endif %} 
+        </button> - {{ total_likes }}      
+      </form>
+
+
+      <!-- COMMENTS  -->
+      <h2 style="position: relative; left: 20px;">Add to Comments</h2>
+
+      <div id="comments_section">
+        <!-- Add to comment -->
+        <form method="POST" style="position: relative; right: 20px;"> {% csrf_token %}
+          <div class="form-group">
+            {{ comment_form }} <br>
+            <button class="btn btn-info" type="submit" style="position: relative; left: 20px;">Add Comment</button>
+          </div>
+        </form>
+        <!-- End add to comment -->
+
+        <!-- All comments -->
+        <br><br>
+        {% for comment in comments %}
+          <div class="card text-bg-danger mb-3" style="max-width: 18rem;">
+            <div class="card-header">
+              {% if comment.author.profile_pic %}
+                <img src="{{ comment.author.profile_pic.url }}" alt="" class="object-cover w-12 h-12 rounded-full shadow dark:bg-gray-500">
+              {% else %}
+                <img src="{% static 'images/avatar.png' %}" alt="" width="50" height="50" style="border-radius: 50%;">
+              {% endif %}
+              
+              {{ comment.author }}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ comment.author.first_name }} {{ comment.author.last_name }}</h5>
+              <p class="card-text">{{ comment.content }}</p>
+              <hr>
+              <p class="card-text">Commented - {{ comment.date_posted }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      <!-- End all comments -->
+      <!-- End COMMENTS  -->
+    </center>
+  </body>
+  </html>
+
+{% endblock content %}

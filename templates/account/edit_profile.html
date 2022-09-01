@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+
+<div class="wrapper">
+    <center>
+        <div class="profile">
+            <div class="content">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if user_model.profile_pic %}
+                        <img src="{{ user_model.profile_pic.url }}" alt="Avatar" style="width:100%">
+                    {% else %}
+                        <img src="{% static 'images/avatar.png' %}" alt="Avatar" style="width:100%">
+                    {% endif %}
+                    <input value="{{ user.first_name }}" type="text" name="first_name" autofocus autocapitalize="none" autocomplete="first_name" maxlength="150" id="id_first_name" placeholder="First name" class="w-full px-3 py-2 border rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100">
+                    <input value="{{ user.last_name }}" type="text" name="last_name" autofocus autocapitalize="none" autocomplete="first_name" maxlength="150" id="id_first_name" placeholder="Last name" class="w-full px-3 py-2 border rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100">
+                    <input value="{{ user.email }}" required type="email" name="email" maxlength="254" id="id_email" placeholder="username@example.com" class="w-full px-3 py-2 border rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100">
+                    <input value="{{ user.bio }}" type="text" name="bio" autofocus autocapitalize="none" autocomplete="bio" maxlength="150" id="id_bio" placeholder="Add Bio" class="w-full px-3 py-2 border rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100">
+                    <input type="file" name="profile_pic" id="id_profile_pic" accept="image/*" class="px-0.1 py-3 border-2 border-dashed rounded-md dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800">
+                    <br><br>
+                    <input type="button" class="Btn cancel" value="Cancel" />
+                    <input type="submit" class="Btn" value="Save Changes" />
+                </form>
+            </div>
+        </div>
+    </center>
+</div>
+
+<script src="{% static 'js/edit_profile.js' %}"></script>
+
+{% endif %}
+
+{% endblock %}

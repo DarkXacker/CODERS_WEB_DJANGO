@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .search {
+        display: none;
+    }
+</style>
+
+<div class="container">
+    <center>
+        <div class="program-text">
+            <h1 class="program-text-h1">{{ program.title }}</h1>
+            <p class="program-text-p">{{ program.body | safe }}</p>
+        </div>
+    
+        <div class="program-image">
+            <a href="{{ program.image.url }}" target="_blank">
+                <img src="{{ program.image.url }}" alt="...">
+            </a>
+        </div>
+    
+        <div class="download-file">
+            <a href="{{ program.document.url }}" download="{{ program.document.url }}" class="btn btn-success">
+                <i class="fa-solid fa-download"></i> Download
+            </a>
+        </div>
+        
+        <div class="download-file-name">
+            <blockquote>
+                <p><i class="fa-solid fa-download"></i> Download Free
+                    <a href="{{ program.document.url }}" download="{{ program.document.url }}">
+                        {{ program.title }} 
+                </p>
+            </blockquote>
+        </div>
+    </center>
+</div>
+
+<div class="program-video">
+    <video controls>
+        <source src="{{ program.video.url }}">
+    </video>
+</div>
+
+<div class="container">
+    <center>
+        <a href="{% url 'programs_list' %}" class="btn btn-primary"><i class="fa-solid fa-circle-chevron-left"></i> Back</a>
+
+        {% if user.is_superuser %}
+            <a href="{% url 'programs_update' program.pk %}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+            <a href="{% url 'programs_delete' program.pk %}" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</a>
+        {% endif %}
+    </center>
+</div>
+
+<style>
+    blockquote p a {
+        color: #179e6c;
+        text-decoration: none;
+        background: transparent;
+    }
+
+    .download-file {
+        padding-top: 30px;
+    }
+
+    .download-file-name {
+        padding-top: 10px;
+    }
+
+    .program-video {
+        width: 100%;
+        text-align: center;
+    }
+
+</style>
+
+{% endblock content %}

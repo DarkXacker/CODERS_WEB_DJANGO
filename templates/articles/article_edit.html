@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/program_update.css' %}">
+</head>
+
+<style>
+    .search {
+        display: none;
+    }
+</style>
+
+<body>
+    {% if user.is_superuser %}
+
+        <div class="container">
+            <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                <center>
+                    <div class="row">
+                        {{ form.media }}
+                        {{ form | crispy }}
+                    </div>
+                    <br>
+
+                    <button type="submit" class="myButton"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                    <a href="{% url 'article_detail' article.pk %}" class="myButton"><i class="fa-solid fa-circle-chevron-left"></i> Back</a>
+                </center>
+                        
+            </form>
+        </div>
+    {% endif %}
+</body>
+
+</html>
+
+{% endblock content %}

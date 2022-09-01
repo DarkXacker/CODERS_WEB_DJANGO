@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/article.css' %}">
+    </head>
+
+    <body>
+
+        <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        section{
+            width: 100%;
+            height: auto;
+            padding: 20px;
+        }
+        .card{
+            overflow: scroll;
+            width: 100%;
+            height: 250px;
+            display: flex;
+            margin: 0 auto;
+            justify-content: space-between;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 10px silver;
+        }
+
+        .card-text {
+            position: relative;
+            left: 550px;
+            width: 50em; 
+            margin: 0.5em; 
+            white-space: normal; 
+            vertical-align: top; 
+            display: inline-block; 
+        }
+
+        .card-img img{
+            height: 250px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .card-text h1{
+            position: relative;
+            bottom: 260px;
+            font-size: 40px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .card-text h4{
+            position: relative;
+            width: auto;
+            font-size: 20px;
+            text-align: right;
+            bottom: 260px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        .card:hover { 
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+        </style>
+
+        {% for article in article %}
+            <section>
+                <div class="card" style="height: 300px; padding: 12px;" onclick="location.href='{% url 'article_detail' article.pk %}'">
+                    <div class="card-img"><img src="{{ article.image.url }}" alt="..."></div>
+                    <div class="card-text">
+                        <center>
+                            <h1>{{ article.title }}</h1>
+                            <h4>{{ article.body | slice:":500" | safe }}</h4>
+                        </center>
+                    </div>
+                </div>
+            </section>
+        {% endfor %}
+    </body>
+
+    </html>
+
+{% endblock %}

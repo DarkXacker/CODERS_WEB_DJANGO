@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+
+  <body>
+    <style>
+        body {
+            background-color: #e5e7eb;
+        }
+
+        .btn {
+            color: black;
+        }
+
+        .btn:hover {
+            color: #fff;
+        }
+        
+        .search {
+          display: none;
+        }
+    </style>
+
+    {% if user.is_superuser %}
+      <center>
+          <form method="post" enctype="multipart/form-data"> {% csrf_token %}
+
+            <h1>Do you want to delete the post named "{{ object.title }}" ?</h1>
+
+              <br>
+              <button class="btn btn-outline-danger" type="submit"><i class="fa-solid fa-floppy-disk"></i> Yes</button>
+              <a class="btn btn-info" href="{% url 'article_detail' article.pk %}"><i class="fa-solid fa-circle-chevron-left"></i> No</a> 
+              <br><br>
+          </form>
+      </center>
+    {% endif %}
+  </body>
+
+  </html>
+
+{% endblock content %}
